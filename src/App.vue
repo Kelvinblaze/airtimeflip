@@ -10,7 +10,7 @@
 
 // Global colors
 :root {
-  --bg-color: #2c2859;
+  --bg-color: #413b85;
   --primary: #e98604;
   --secondary: #6d63de;
   --white: #ffffff;
@@ -23,14 +23,15 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  background: var(--bg-color);
+}
 
 // Main Vue App Component
 #app {
   font-family: "Lato", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--bg-color);
-  height: 100vh;
   padding: 1rem;
 }
 </style>

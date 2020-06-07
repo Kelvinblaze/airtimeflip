@@ -2,7 +2,7 @@
   <fragment>
     <div class="login-page">
       <div class="brand-logo">
-        <h1>AirtimeFlip</h1>
+        <img :src="require('../assets/logo.png')" alt="logo" />
       </div>
 
       <div class="login-form">
@@ -55,6 +55,18 @@ label {
   color: var(--white);
 }
 
+.brand-logo {
+  width: 150px;
+  margin: 2% auto;
+  img {
+    max-width: 100%;
+  }
+}
+
+.registration-wrapper {
+  margin: 1rem 0;
+}
+
 .registration-wrapper a {
   color: var(--white);
   text-decoration: none;
@@ -65,7 +77,7 @@ label {
   background: var(--white);
   margin: 2rem auto;
   padding: 1rem 2rem;
-  border-radius: 1.5rem 1.5rem 1.5rem 0;
+  border-radius: 0;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
