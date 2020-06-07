@@ -8,6 +8,10 @@ import "./registerServiceWorker";
 import Fragment from "vue-fragment";
 Vue.use(Fragment.Plugin);
 
+// Using Vue Resource Plugin
+import VueResource from "vue-resource";
+Vue.use(VueResource);
+
 Vue.config.productionTip = false;
 
 new Vue({

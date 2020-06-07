@@ -129,6 +129,7 @@ label {
         outline: none;
       }
       input[type="submit"] {
+        -webkit-appearance: none;
         margin-top: 1rem;
         background: var(--bg-color);
         color: var(--white);

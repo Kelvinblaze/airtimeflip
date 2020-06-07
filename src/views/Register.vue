@@ -15,30 +15,34 @@
           <form>
             <div class="form-group">
               <label for="fullname">Full Name</label>
-              <input type="text" required />
+              <input type="text" required v-model="fullName" />
             </div>
             <div class="form-group">
               <label for="username">User Name</label>
-              <input type="text" required />
+              <input type="text" required v-model="userName" />
             </div>
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" required />
+              <input type="email" required v-model="emailAddress" />
             </div>
             <div class="form-group">
               <label for="mobilenum">Mobile Number</label>
-              <input type="tel" required />
+              <input type="tel" required v-model="phoneNumber" />
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" required />
+              <input type="password" required v-model="pass" />
             </div>
             <div class="form-group">
               <label for="cpassword">Confirm Password</label>
-              <input type="password" required />
+              <input type="password" required v-model="confirmPass" />
             </div>
             <div class="form-group">
-              <input type="submit" value="CREATE ACCOUNT" />
+              <input
+                type="submit"
+                value="CREATE ACCOUNT"
+                @click.prevent="createAccount()"
+              />
             </div>
           </form>
         </div>
@@ -54,7 +58,42 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Registration",
+  data() {
+    return {
+      fullName: "",
+      userName: "",
+      emailAddress: "",
+      phoneNumber: "",
+      pass: "",
+      confirmPass: ""
+    };
+  },
+  methods: {
+    async createAccount() {
+      try {
+        const apiCall = this.$http.post(
+          "https://test.airtimeflip.com/api/v1/users",
+          {
+            fullname: this.fullName,
+            username: this.userName,
+            number: this.phoneNumber,
+            email: this.emailAddress,
+            password: this.pass,
+            password_confirmation: this.confirmPass
+          }
+        );
+
+        const apiJsonResponse = await apiCall;
+
+        console.log(apiJsonResponse);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -145,6 +184,7 @@ label {
         outline: none;
       }
       input[type="submit"] {
+        -webkit-appearance: none;
         margin-top: 1rem;
         background: var(--bg-color);
         color: var(--white);
