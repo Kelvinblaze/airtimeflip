@@ -62,7 +62,7 @@ export default {
 .body {
   background: var(--white);
   padding: 4rem 6rem;
-  height: 80vh;
+  height: auto;
 
   @media (max-width: 768px) {
     padding: 2rem;
