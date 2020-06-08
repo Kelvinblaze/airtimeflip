@@ -30,11 +30,14 @@
           cardTitle="Retrieve Account Name"
           cardSubtitle="Get an Account Name"
         /> -->
-        <Card
-          iconName="fa fa-sign-out"
-          cardTitle="Log Out"
-          cardSubtitle="Log out from AirtimeFlip "
-        />
+
+        <div @click="logOut()">
+          <Card
+            iconName="fa fa-sign-out"
+            cardTitle="Log Out"
+            cardSubtitle="Log out from AirtimeFlip "
+          />
+        </div>
       </div>
     </div>
   </fragment>
@@ -44,8 +47,9 @@
 export default {
   name: "Home",
   methods: {
-    sayHello() {
-      alert("hello");
+    logOut() {
+      localStorage.removeItem("airtimeFlipToken");
+      this.$router.push("/login");
     }
   }
 };

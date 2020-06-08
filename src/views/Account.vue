@@ -39,7 +39,7 @@ export default {
       accounts: null
     };
   },
-  async created() {
+  async mounted() {
     try {
       const apiHeaders = {
         Authorization: `Bearer ${localStorage.getItem("airtimeFlipToken")}`
