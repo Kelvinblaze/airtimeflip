@@ -12,14 +12,15 @@
         </div>
 
         <div class="form-content">
-          <form>
+          <form @submit.prevent="login()">
+            <span class="err-msg"> {{ errorMessage }}</span>
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" required />
+              <input type="email" required v-model="emailAddress" />
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" required />
+              <input type="password" required v-model="password" />
             </div>
             <div class="form-group">
               <input type="submit" value="LOG IN" />
@@ -38,11 +39,62 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Login",
+  data() {
+    return {
+      emailAddress: "",
+      password: "",
+      errorMessage: ""
+    };
+  },
+  methods: {
+    async login() {
+      this.errorMessage = "";
+      try {
+        const apiCall = this.$http.post("login", {
+          identity: this.emailAddress,
+          password: this.password
+        });
+
+        const apiResponse = await apiCall;
+
+        const accessToken = apiResponse.data.payload.access_token;
+        const userData = apiResponse.data.payload.user;
+
+        localStorage.setItem("airtimeFlipToken", accessToken);
+        this.$store.dispatch("addToken", accessToken);
+        this.$store.dispatch("addUser", userData);
+
+        if (
+          this.$store.getters.isLoggedIn === true &&
+          this.$store.getters.token === accessToken
+        ) {
+          this.$router.push("/");
+        }
+      } catch (err) {
+        console.log(err);
+        if (err.status === 404) {
+          this.errorMessage = err.data.message;
+        }
+        if (err.status === 422) {
+          this.errorMessage = err.data.data.password.toString();
+        }
+        if (err.status === 401) {
+          this.errorMessage = err.data.message;
+        }
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 // Utilities
+
+.err-msg {
+  color: red;
+}
 
 label {
   display: block;

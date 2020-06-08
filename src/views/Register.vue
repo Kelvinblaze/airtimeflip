@@ -12,37 +12,51 @@
         </div>
 
         <div class="form-content">
-          <form>
+          <form @submit.prevent="createAccount()">
             <div class="form-group">
               <label for="fullname">Full Name</label>
               <input type="text" required v-model="fullName" />
+              <div class="error-msg">
+                <span>{{ fullNameErr }}</span>
+              </div>
             </div>
             <div class="form-group">
               <label for="username">User Name</label>
               <input type="text" required v-model="userName" />
+              <div class="error-msg">
+                <span>{{ userNameErr }}</span>
+              </div>
             </div>
             <div class="form-group">
               <label for="email">Email Address</label>
               <input type="email" required v-model="emailAddress" />
+              <div class="error-msg">
+                <span>{{ emailErr }}</span>
+              </div>
             </div>
             <div class="form-group">
               <label for="mobilenum">Mobile Number</label>
               <input type="tel" required v-model="phoneNumber" />
+              <div class="error-msg">
+                <span>{{ numberErr }}</span>
+              </div>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
               <input type="password" required v-model="pass" />
+              <div class="error-msg">
+                <span>{{ passErr }}</span>
+              </div>
             </div>
             <div class="form-group">
               <label for="cpassword">Confirm Password</label>
               <input type="password" required v-model="confirmPass" />
+              <div class="error-msg">
+                <span>{{ passConfirmErr }}</span>
+              </div>
             </div>
             <div class="form-group">
-              <input
-                type="submit"
-                value="CREATE ACCOUNT"
-                @click.prevent="createAccount()"
-              />
+              <button type="submit">CREATE ACCOUNT</button>
             </div>
           </form>
         </div>
@@ -67,29 +81,59 @@ export default {
       emailAddress: "",
       phoneNumber: "",
       pass: "",
-      confirmPass: ""
+      confirmPass: "",
+      passConfirmErr: "",
+      fullNameErr: "",
+      userNameErr: "",
+      emailErr: "",
+      numberErr: "",
+      passErr: ""
     };
   },
   methods: {
     async createAccount() {
-      try {
-        const apiCall = this.$http.post(
-          "https://test.airtimeflip.com/api/v1/users",
-          {
+      if (this.pass !== this.confirmPass) {
+        this.passConfirmErr = "Passwords do not match";
+      } else {
+        try {
+          this.passConfirmErr = "";
+          this.userNameErr = "";
+          this.emailErr = "";
+          this.numberErr = "";
+
+          const apiCall = this.$http.post("users", {
             fullname: this.fullName,
             username: this.userName,
             number: this.phoneNumber,
             email: this.emailAddress,
             password: this.pass,
             password_confirmation: this.confirmPass
+          });
+
+          const apiRes = await apiCall;
+          console.log(apiRes);
+
+          if (apiRes.status === 200) {
+            if (apiRes.body.message) {
+              alert(apiRes.body.message);
+              this.$router.push("/login");
+            }
+            if (apiRes.body.data.success === false) {
+              this.numberErr = apiRes.body.data.errors.phone.toString();
+            }
           }
-        );
-
-        const apiJsonResponse = await apiCall;
-
-        console.log(apiJsonResponse);
-      } catch (error) {
-        console.log(error);
+        } catch (error) {
+          console.log(error);
+          if (error.body.data.email) {
+            this.emailErr = error.body.data.email.toString();
+          }
+          if (error.body.data.username) {
+            this.userNameErr = error.body.data.username.toString();
+          }
+          if (error.body.data.number) {
+            this.numberErr = error.body.data.number.toString();
+          }
+        }
       }
     }
   }
@@ -101,6 +145,11 @@ export default {
 
 label {
   display: block;
+}
+
+.error-msg {
+  color: red;
+  margin: 8px 0;
 }
 
 .brand-logo,
@@ -183,13 +232,18 @@ label {
         background: #edf2f7;
         outline: none;
       }
-      input[type="submit"] {
+      button {
         -webkit-appearance: none;
         margin-top: 1rem;
         background: var(--bg-color);
         color: var(--white);
         font-weight: bold;
         cursor: pointer;
+        padding: 1rem;
+        width: 100%;
+        border: none;
+        border-radius: 4px;
+        outline: none;
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="home"></div>
+  <fragment></fragment>
 </template>
 
 <script>
