@@ -13,6 +13,7 @@
 
         <div class="form-content">
           <form @submit.prevent="createAccount()">
+            <span class="err-msg"> {{ errorMessage }}</span>
             <div class="form-group">
               <label for="AccountName">Account Name</label>
               <input type="text" required v-model="accountName" />
@@ -51,6 +52,12 @@
               <button type="submit">ADD ACCOUNT DETAILS</button>
             </div>
           </form>
+
+          <div class="form-group">
+            <button type="button" class="back-btn" @click="goBack()">
+              BACK
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -66,21 +73,25 @@ export default {
       accountNumber: "",
       bankName: "",
       accountType: "yes",
-      banks: []
+      banks: [],
+      errorMessage: ""
     };
   },
   mounted() {
     this.fetchBanks();
   },
   methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
     async createAccount() {
+      this.errorMessage = "";
       try {
         const apiHeaders = {
           Authorization: `Bearer ${localStorage.getItem("airtimeFlipToken")}`
         };
 
-        console.log(apiHeaders);
-        const apiCall = this.$http.post(
+        const apiCall = await this.$http.post(
           "accounts",
           {
             account_number: this.accountNumber,
@@ -93,9 +104,17 @@ export default {
           }
         );
 
-        console.log(apiCall);
+        if (apiCall.status === 200) {
+          alert(apiCall.data.message);
+          this.accountNumber = "";
+          this.bankName = "";
+          this.accountName = "";
+          this.personal = "yes";
+        }
       } catch (error) {
-        console.log(error);
+        if (error.status === 400) {
+          this.errorMessage = error.data.message;
+        }
       }
     },
     async fetchBanks() {
@@ -118,6 +137,9 @@ export default {
 
 label {
   display: block;
+}
+.err-msg {
+  color: red;
 }
 .customLabel {
   display: flex;
@@ -225,6 +247,11 @@ label {
         border: none;
         border-radius: 4px;
         outline: none;
+      }
+      .back-btn {
+        background: var(--white);
+        color: var(--bg-color);
+        border: 1px solid var(--bg-color);
       }
     }
   }
