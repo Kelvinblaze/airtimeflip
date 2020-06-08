@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import CreateAccount from "../views/Create-Account.vue";
+
 
 Vue.use(VueRouter);
 
@@ -29,6 +31,14 @@ const routes = [
     name: "Register",
     meta: {
       guest: true
+    }
+  },
+  {
+    path: "/create-account",
+    component: CreateAccount,
+    name: "create-account",
+    meta: {
+      requiresAuth: true
     }
   }
 ];

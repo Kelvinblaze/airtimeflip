@@ -62,7 +62,6 @@ export default {
         const accessToken = apiResponse.data.payload.access_token;
         const userData = apiResponse.data.payload.user;
 
-        localStorage.setItem("airtimeFlipToken", accessToken);
         this.$store.dispatch("addToken", accessToken);
         this.$store.dispatch("addUser", userData);
 

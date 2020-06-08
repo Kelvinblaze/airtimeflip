@@ -26,12 +26,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    addUser({ commit }, payload) {
+      commit("ADD_USER_DETAILS", payload);
+    },
     addToken({ commit }, payload) {
       commit("ADD_TOKEN", payload);
       commit("IS_LOGGED_IN", true);
-    },
-    addUser({ commit }, payload) {
-      commit("ADD_USER_DETAILS", payload);
+      localStorage.setItem("airtimeFlipToken", payload);
     }
   },
   modules: {}
