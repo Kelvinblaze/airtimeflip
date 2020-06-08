@@ -3,7 +3,7 @@
     <Navbar />
     <div class="body">
       <div class="introduction">
-        <h1>Welcome</h1>
+        <h1 class="header-text">Welcome</h1>
         <p>
           We make it easier for you to convert airtime to cash
         </p>
@@ -17,16 +17,19 @@
             cardSubtitle="You can add new accounts"
           />
         </router-link>
-        <Card
-          iconName="fa fa-search"
-          cardTitle="Get Accounts"
-          cardSubtitle="Fetch your account details"
-        />
-        <Card
+
+        <router-link to="/account">
+          <Card
+            iconName="fa fa-search"
+            cardTitle="Get Accounts"
+            cardSubtitle="Fetch your account details"
+          />
+        </router-link>
+        <!-- <Card
           iconName="fa fa-plus"
           cardTitle="Retrieve Account Name"
           cardSubtitle="Get an Account Name"
-        />
+        /> -->
         <Card
           iconName="fa fa-sign-out"
           cardTitle="Log Out"
@@ -49,9 +52,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header-text {
+  color: var(--bg-color);
+}
 .body {
   background: var(--white);
   padding: 4rem 6rem;
+  height: 80vh;
 
   @media (max-width: 768px) {
     padding: 2rem;
