@@ -37,21 +37,40 @@
         </p>
       </div>
     </div>
+
+    <!-- LOADER -->
+    <loading
+      :active.sync="isLoading"
+      :can-cancel="false"
+      :on-cancel="onCancel"
+      :is-full-page="fullPage"
+    ></loading>
   </fragment>
 </template>
 
 <script>
+// Import component
+import Loading from "vue-loading-overlay";
+// Import stylesheet
+import "vue-loading-overlay/dist/vue-loading.css";
+
 export default {
   name: "Login",
+  components: {
+    Loading
+  },
   data() {
     return {
       emailAddress: "",
       password: "",
-      errorMessage: ""
+      errorMessage: "",
+      isLoading: false,
+      fullPage: true
     };
   },
   methods: {
     async login() {
+      this.isLoading = true;
       this.errorMessage = "";
       try {
         const apiCall = this.$http.post("login", {
@@ -72,9 +91,11 @@ export default {
           this.$store.getters.token === accessToken
         ) {
           this.$router.push("/");
+          this.isLoading = false;
         }
       } catch (err) {
         console.log(err);
+        this.isLoading = false;
         if (err.status === 404) {
           this.errorMessage = err.data.message;
         }

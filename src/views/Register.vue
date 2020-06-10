@@ -70,12 +70,28 @@
         </p>
       </div>
     </div>
+
+    <!-- LOADER -->
+    <loading
+      :active.sync="isLoading"
+      :can-cancel="false"
+      :on-cancel="onCancel"
+      :is-full-page="fullPage"
+    ></loading>
   </fragment>
 </template>
 
 <script>
+// Import component
+import Loading from "vue-loading-overlay";
+// Import stylesheet
+import "vue-loading-overlay/dist/vue-loading.css";
+
 export default {
   name: "Registration",
+  components: {
+    Loading
+  },
   data() {
     return {
       fullName: "",
@@ -89,12 +105,17 @@ export default {
       userNameErr: "",
       emailErr: "",
       numberErr: "",
-      passErr: ""
+      passErr: "",
+      isLoading: false,
+      fullPage: true
     };
   },
   methods: {
     async createAccount() {
+      this.isLoading = true;
+
       if (this.pass !== this.confirmPass) {
+        this.isLoading = false;
         this.passConfirmErr = "Passwords do not match";
       } else {
         try {
@@ -116,16 +137,20 @@ export default {
           console.log(apiRes);
 
           if (apiRes.status === 200) {
+            this.isLoading = false;
             if (apiRes.body.message) {
+              this.isLoading = false;
               alert(apiRes.body.message);
               this.$router.push("/login");
             }
             if (apiRes.body.data.success === false) {
+              this.isLoading = false;
               this.numberErr = apiRes.body.data.errors.phone.toString();
             }
           }
         } catch (error) {
           console.log(error);
+          this.isLoading = false;
           if (error.body.data.email) {
             this.emailErr = error.body.data.email.toString();
           }
