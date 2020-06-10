@@ -64,7 +64,9 @@
 
       <div class="registration-wrapper">
         <p>
-          <a href="/login">Already Own an account? Login Here</a>
+          <router-link to="/login"
+            >Already Own an account? Login Here</router-link
+          >
         </p>
       </div>
     </div>

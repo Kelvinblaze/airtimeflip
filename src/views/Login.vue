@@ -13,7 +13,7 @@
 
         <div class="form-content">
           <form @submit.prevent="login()">
-            <span class="err-msg"> {{ errorMessage }}</span>
+            <span class="err-msg">{{ errorMessage }}</span>
             <div class="form-group">
               <label for="email">Email Address</label>
               <input type="email" required v-model="emailAddress" />
@@ -31,7 +31,9 @@
 
       <div class="registration-wrapper">
         <p>
-          <a href="/register">Don't have an account? Register</a>
+          <router-link to="/register"
+            >Don't have an account? Register</router-link
+          >
         </p>
       </div>
     </div>
